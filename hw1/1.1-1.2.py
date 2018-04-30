@@ -10,18 +10,19 @@ Created on Sun Apr 22 09:13:09 2018
 from sklearn import datasets
 from scipy import sparse
 import numpy as np
-
+import sklearn as sk
 #read file and convert to numpy array
 filename = "D:/UCD_STA141C/hw1/cpusmall.txt"
 X,y = datasets.load_svmlight_file(filename)
 X_array = sparse.csr_matrix.todense(X) 
-X_array.shape
+X_array = sk.preprocessing.normalize(X_array, axis=0)
 y = y.reshape(y.size,1)
+y = sk.preprocessing.normalize(y, axis=0)
 #random omega vector initialize
 vec_omega = np.random.rand(12).reshape(12,1)
 lamda = 1
-eta = 0.000000000000001
-epsilon = 0.00000001
+eta = 0.001
+epsilon = 0.001
 #%%
 
 #%%
@@ -42,23 +43,21 @@ def GradientVec(X, omega, y, lamda):
     @para: X is a 2D numpy array, omega and y is 1D numpy array.
     @return: 1D numpy array.
     """
-    g = (X.transpose().dot(X.dot(omega)-y)*2/y.size + omega*lamda).A
+    g = (X.transpose().dot(X.dot(omega)-y)*2/y.size + omega*lamda)
     return g        
 #%%
 
 
 #%%
 r0 = L2Norm(GradientVec(X_array,vec_omega,y,lamda))
-# =============================================================================
-# while (True):
-#     vec_omega = vec_omega-eta*GradientVec(X_array,vec_omega,y,lamda)
-#     r = L2Norm(GradientVec(X_array,vec_omega,y,lamda))
-#     print(r)
-#     if( r < epsilon*r0 ):
-#         break
-# =============================================================================
-        
-    
+
+while (True):
+     vec_omega = vec_omega-eta*GradientVec(X_array,vec_omega,y,lamda)
+     r = L2Norm(GradientVec(X_array,vec_omega,y,lamda))
+     print(r)
+     if( r < epsilon*r0 ):
+         break
+
 print(vec_omega)
 #%%
 
@@ -73,8 +72,8 @@ TrainDataSetY= []
 TestDataSetX = []
 TestDataSetY = []
 
-
 for i in range (4):
+
     a, b = i*Step, (i+1)*Step
     SubTestDataX = TotalData[a:b,:-1]
     SubTestDataY = TotalData[a:b,-1]
