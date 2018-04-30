@@ -61,54 +61,6 @@ while (True):
 print(vec_omega)
 #%%
 
-#%%
-TotalData = np.hstack((X_array,y))
-np.random.shuffle(TotalData)
-Step = int(X_array.shape[0]/5)
-#train data set
-TrainDataSetX = []
-TrainDataSetY= []
-#test data set
-TestDataSetX = []
-TestDataSetY = []
-
-for i in range (5):
-
-    a, b = int(i*Step), int((i+1)*Step)
-    SubTestDataX = TotalData[a:b,:-1]
-    SubTestDataY = TotalData[a:b,-1]
-    SubTrainDataX = np.vstack((TotalData[0:a,:-1],TotalData[b:,:-1]))
-    SubTrainDataY = np.vstack((TotalData[0:a,-1:],TotalData[b:,-1:]))
-    TestDataSetX.append(SubTestDataX)
-    TestDataSetY.append(SubTestDataY)
-    TrainDataSetX.append(SubTrainDataX)
-    TrainDataSetY.append(SubTrainDataY)
-#%%
-
-#%%
-def train(X_train,omega,y_train,lamda):
-    r0 = L2Norm(GradientVec(X_train,omega,y_train,lamda))
-
-    while (True):
-        omega = omega-eta*GradientVec(X_train,omega,y_train,lamda)
-        r = L2Norm(GradientVec(X_train,omega,y_train,lamda))
-        print(r)
-        if( r < epsilon*r0 ):
-            break
-    return omega
-
-def MSE(X_test,omega,y_test):
-    return L2Norm(X_test.dot(omega)-y_test)/y_test.size
-#%%
-
-#%%
-mse=0  
-omega = np.random.rand(12).reshape(12,1)
-for i in range(5):
-    omega=train(TrainDataSetX[i],omega,TrainDataSetY[i],lamda)
-    mse+=MSE(TestDataSetX[i],omega,TestDataSetY[i])
-print(mse/5)
-#%%
 
 
 

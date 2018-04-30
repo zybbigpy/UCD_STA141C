@@ -7,21 +7,28 @@ Created on Sun Apr 29 15:29:57 2018
 
 #%%
 from sklearn import datasets
+from sklearn.model_selection import train_test_split
 from scipy import sparse
 import numpy as np
 
 filename="D:/UCD_STA141C/hw1/news20.binary.bz2"
 X,y = datasets.load_svmlight_file(filename)
-y = sparse.csr_matrix(y).T
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+y_train = sparse.csr_matrix(y_train).T
+y_test = sparse.csr_matrix(y_test).T
 omega = np.random.rand(1355191).reshape(1355191,1)
 omega = sparse.csr_matrix(omega)
 lamda = 1
 #%%
 
 #%%
-def Gradient(X,y,omega,lamda):
+def h(x):
+    return 1/(1+np.exp(x))
 
-    g = -X.T@y/(1+np.exp(((omega.T)@(X.T)@y)[0,0])) +omega
+def Gradient(X,y,omega,lamda):
+    a = np.array(sparse.csr_matrix.todense(X@omega))
+    b = np.array(sparse.csr_matrix.todense(y))
+    g =  X.T@sparse.csr_matrix(-b*h(b*a))/y.shape[0]+ lamda*omega
     return g
 #%% 
     
@@ -32,28 +39,24 @@ def Norm(vec):
 #%%
     
 #%%
-r0 = Norm(Gradient(X,y,omega,lamda))
+r0 = Norm(Gradient(X_train,y_train,omega,lamda))
 epsilon=0.001
 eta =0.01
 while (True):
-     omega = omega-eta*Gradient(X,y,omega,lamda)
-     r = Norm(Gradient(X,y,omega,lamda))
+     omega = omega-eta*Gradient(X_train,y_train,omega,lamda)
+     r = Norm(Gradient(X_train,y_train,omega,lamda))
      print(r)
      if( r < epsilon*r0 ):
          break     
 #%%
-         
-     
-#%%
-n=0
-y_star=X@omega
-for i in range(y.shape[0]):
-    if y_star[i]*y[i]>0:
-        n+=1;
-print(n)        
-#%%
-         
-#%%
 
      
 #%%
+n = 0
+y_star = X_test@omega
+for i in range(y_test.shape[0]):
+    if (y_star[i]*y_test[i] > 0):
+        n += 1;
+print(n/y_test.shape[0])        
+#%%
+         
