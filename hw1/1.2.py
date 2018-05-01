@@ -4,7 +4,7 @@ Created on Mon Apr 30 09:16:57 2018
 
 @author: MiaoWangqian
 """
-#%%
+
 from sklearn import datasets
 from scipy import sparse
 import numpy as np
@@ -39,9 +39,7 @@ def GradientVec(X, omega, y, lamda):
     g = (X.transpose().dot(X.dot(omega)-y)*2/y.size + omega*lamda)
     return g
 
-#%%
-    
-#%%
+
 TotalData = np.hstack((X_array,y))
 np.random.shuffle(TotalData)
 Step = int(X_array.shape[0]/5)
@@ -52,6 +50,7 @@ TrainDataSetY= []
 TestDataSetX = []
 TestDataSetY = []
 
+# slice the data
 for i in range (5):
 
     a, b = int(i*Step), int((i+1)*Step)
@@ -63,9 +62,7 @@ for i in range (5):
     TestDataSetY.append(SubTestDataY)
     TrainDataSetX.append(SubTrainDataX)
     TrainDataSetY.append(SubTrainDataY)
-#%%
 
-#%%
 def train(X_train,omega,y_train,lamda):
     r0 = L2Norm(GradientVec(X_train,omega,y_train,lamda))
 
@@ -79,16 +76,14 @@ def train(X_train,omega,y_train,lamda):
 
 def MSE(X_test,omega,y_test):
     return L2Norm(X_test.dot(omega)-y_test)/y_test.size
-#%%
 
-#%%
-mse=0  
+mse = 0  
 omega = np.random.rand(12).reshape(12,1)
 for i in range(5):
     omega=train(TrainDataSetX[i],omega,TrainDataSetY[i],lamda)
     mse+=MSE(TestDataSetX[i],omega,TestDataSetY[i])
 print(mse/5)
-#%%
+
 
 
 
