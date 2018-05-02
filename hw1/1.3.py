@@ -11,8 +11,9 @@ from scipy import sparse
 import numpy as np
 filename="D:/UCD_STA141C/hw1/E2006.train.bz2"
 X,y = datasets.load_svmlight_file(filename)
+X = X[:,:-2]
 y = sparse.csc_matrix(y).T
-omega = np.random.rand(150360).reshape(150360,1)
+omega = np.random.rand(150358).reshape(150358,1)
 omega = sparse.csc_matrix(omega)
 lamda = 1 
 
@@ -56,9 +57,9 @@ def MSE(X,omega,y):
 TestFilename = "D:/UCD_STA141C/hw1/E2006.test.bz2"         
 X_test,y_test = datasets.load_svmlight_file(TestFilename)
 y_test = sparse.csc_matrix(y_test).T   
-#X_test.shapr=(3308, 150358),we need drop the last two feature of omega   
-newo = omega[:-2]
-mse = MSE(X_test,newo,y_test)
+  
+
+mse = MSE(X_test,omega,y_test)
 print(mse)
 
 

@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from scipy import sparse
 import numpy as np
 
-filename="D:/UCD_STA141C/hw1/news20.binary.bz2"
+filename = "D:/UCD_STA141C/hw1/news20.binary.bz2"
 X,y = datasets.load_svmlight_file(filename)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 y_train = sparse.csr_matrix(y_train).T
@@ -27,7 +27,7 @@ def h(x):
 def Gradient(X,y,omega,lamda):
     a = np.array(sparse.csr_matrix.todense(X@omega))
     b = np.array(sparse.csr_matrix.todense(y))
-    g =  X.T@sparse.csr_matrix(-b*h(b*a))/y.shape[0]+ lamda*omega
+    g =  X.T@sparse.csr_matrix(-b*h(b*a))+ lamda*omega
     return g
  
     
