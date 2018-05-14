@@ -4,6 +4,10 @@
 
 HW1 added:
 1. Linear Regression on LIBSVM Data.
-2. Cross Validation. 
-3. Ridge Regression. 
-4. Logistic Regression.
+2. Cross Validation use sklearn. 
+3. Ridge Regression. (how to choose lamda) 
+4. Logistic Regression.(vectorization in numpy, important!)
+
+HW2 added:
+1. 1-nn multiprocess.
+2. Logistics multiprocess.
