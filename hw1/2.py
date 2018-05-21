@@ -10,7 +10,8 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from scipy import sparse
 import numpy as np
-
+import time
+#%%
 filename = "D:/UCD_STA141C/hw1/news20.binary.bz2"
 X,y = datasets.load_svmlight_file(filename)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -19,7 +20,7 @@ y_test = sparse.csr_matrix(y_test).T
 omega = np.random.randn(1355191).reshape(1355191,1)
 omega = sparse.csr_matrix(omega)
 lamda = 1
-
+#%%
 #gradient
 def h(x):
     return 1/(1+np.exp(x))
@@ -42,8 +43,11 @@ r0 = Norm(Gradient(X_train,y_train,omega,lamda))
 epsilon=0.001
 eta =0.01
 while (True):
-     omega = omega-eta*Gradient(X_train,y_train,omega,lamda)
+     start = time.time() 
+     omega = omega-eta*Gradient(X_train,y_train,omega,lamda) 
+     print(time.time()-start)
      r = Norm(Gradient(X_train,y_train,omega,lamda))
+    
      print(r)
      if( r < epsilon*r0 ):
          break     
