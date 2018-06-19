@@ -14,3 +14,15 @@ HW2 added:
 1. 1-nn multiprocess.
 2. Logistics multiprocess.
 3. python pool.
+
+### HW3
+
+HW3 added:
+1. k-means
+
+### Project
+
+1. logistic regression.
+2. SVM with different kernels.
+3. Neural Networks with tensorflow.
+4. Basic Practice with XGBoost.
